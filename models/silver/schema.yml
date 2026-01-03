@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: listing_current
+    description: "Current state of all listings"
+    columns:
+      - name: listing_id
+        description: "Listing ID (primary key)"
+        tests:
+          - not_null
+          - unique
+      - name: price_kzt
+        description: "Price in KZT"
+        tests:
+          - not_null:
+              config:
+                where: "is_active = TRUE"
+      - name: make
+        description: "Vehicle make"
+        tests:
+          - not_null:
+              config:
+                where: "is_active = TRUE"
+      - name: model
+        description: "Vehicle model"
+        tests:
+          - not_null:
+              config:
+                where: "is_active = TRUE"
+      - name: is_active
+        description: "Whether listing is active"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: listing_snapshot_daily
+    description: "Daily snapshots of listings"
+    columns:
+      - name: listing_id
+        description: "Listing ID"
+        tests:
+          - not_null
+      - name: snapshot_date
+        description: "Snapshot date"
+        tests:
+          - not_null
+      - name: is_active
+        description: "Whether listing is active"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+

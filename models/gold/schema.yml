@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: fact_listing_daily
+    description: "Daily snapshot of listings in STAR schema"
+    columns:
+      - name: date_key
+        description: "Date key (YYYYMMDD format)"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: listing_id
+        description: "Listing ID"
+        tests:
+          - not_null
+      - name: location_key
+        description: "Foreign key to dim_location"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_key
+      - name: vehicle_key
+        description: "Foreign key to dim_vehicle"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_vehicle')
+              field: vehicle_key
+      - name: seller_key
+        description: "Foreign key to dim_seller"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_seller')
+              field: seller_key
+      - name: price_kzt
+        description: "Price in KZT"
+        tests:
+          - not_null:
+              config:
+                where: "is_active = TRUE"
+      - name: is_active
+        description: "Whether listing is active"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: fact_price_event
+    description: "Price change events"
+    columns:
+      - name: listing_id
+        description: "Listing ID"
+        tests:
+          - not_null
+      - name: event_ts
+        description: "Event timestamp"
+        tests:
+          - not_null
+      - name: date_key
+        description: "Date key"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+  - name: dim_date
+    description: "Date dimension"
+    columns:
+      - name: date_key
+        description: "Date key (YYYYMMDD)"
+        tests:
+          - not_null
+          - unique
+      - name: d
+        description: "Date"
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_vehicle
+    description: "Vehicle dimension"
+    columns:
+      - name: vehicle_key
+        description: "Vehicle key"
+        tests:
+          - not_null
+          - unique
+      - name: make
+        description: "Vehicle make"
+        tests:
+          - not_null
+      - name: model
+        description: "Vehicle model"
+        tests:
+          - not_null
+
+  - name: dim_location
+    description: "Location dimension"
+    columns:
+      - name: location_key
+        description: "Location key"
+        tests:
+          - not_null
+          - unique
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+
+  - name: dim_seller
+    description: "Seller dimension"
+    columns:
+      - name: seller_key
+        description: "Seller key"
+        tests:
+          - not_null
+          - unique
+
