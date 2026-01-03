@@ -12,8 +12,8 @@ Dockerized data pipeline for kolesa.kz car listings using Airflow. Implements Br
 
 ```bash
 # 1. Clone and setup
-git clone https://github.com/YOUR_USERNAME/kolesa_dwh.git
-cd kolesa_dwh
+git clone https://github.com/assetzhumin/kolesa-dwh.git
+cd kolesa-dwh
 cp .env.example .env
 
 # 2. Start services
